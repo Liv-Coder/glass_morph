@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "stable"
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Run unit tests
+        run: flutter test --coverage
+      - name: Analyze package (pana)
+        run: |
+          dart pub global activate pana
+          pana .
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage/lcov.info
+          fail_ci_if_error: true

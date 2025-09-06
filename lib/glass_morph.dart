@@ -1,8 +1,13 @@
-/// Support for doing something awesome.
+/// Public API for the glass_morph package.
 ///
-/// More dartdocs go here.
-library;
+/// Export stable widgets and keep this barrel file minimal to preserve API stability.
+library glass_morph;
 
-export 'src/glass_morph_base.dart';
+// Exports
+export 'src/glass_morph_button.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+// Future exports:
+// export 'src/glass_morph_card.dart';
+// export 'src/glass_morph_fab.dart';
+
+// Note: Keep public API small and stable.
