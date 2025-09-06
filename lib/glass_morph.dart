@@ -5,9 +5,7 @@ library glass_morph;
 
 // Exports
 export 'src/glass_morph_button.dart';
-
-// Future exports:
-// export 'src/glass_morph_card.dart';
-// export 'src/glass_morph_fab.dart';
+export 'src/glass_morph_card.dart';
+export 'src/glass_morph_fab.dart';
 
 // Note: Keep public API small and stable.

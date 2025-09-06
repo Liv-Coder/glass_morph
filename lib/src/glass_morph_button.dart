@@ -64,7 +64,8 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
       child: Container(
         padding: widget.padding,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(widget.opacity),
+          color: Colors.white
+              .withAlpha((widget.opacity.clamp(0.0, 1.0) * 255).round()),
           borderRadius: radius,
           border: widget.border,
           boxShadow: widget.shadow,
@@ -77,20 +78,26 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
     );
 
     // Apply blur via BackdropFilter inside a clipped container.
+    // Wrap BackdropFilter with RepaintBoundary to avoid propagating repaints
+    // to the parent when the blur changes.
     content = ClipRRect(
       borderRadius: radius,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: _currentBlur,
-          sigmaY: _currentBlur,
+      child: RepaintBoundary(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: _currentBlur,
+            sigmaY: _currentBlur,
+          ),
+          child: content,
         ),
-        child: content,
       ),
     );
 
-    // Gesture handling
+    // Gesture handling + accessibility metadata
     return Semantics(
       button: true,
+      onTapHint: widget.onPressed == null ? null : 'Activate',
+      label: widget.child is Text ? (widget.child as Text).data : null,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTapDown: (_) => _setPressed(true),
@@ -103,7 +110,7 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
           duration: duration,
           curve: Curves.easeOut,
           // Small elevation change when pressed — visual polish only.
-          transform: Matrix4.identity()..translate(0.0, _pressed ? 1.0 : 0.0),
+          transform: Matrix4.translationValues(0.0, _pressed ? 1.0 : 0.0, 0.0),
           child: content,
         ),
       ),

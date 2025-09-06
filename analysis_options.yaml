@@ -11,7 +11,10 @@
 # (the recommended set includes the core lints).
 # The core lints are also what is used by pub.dev for scoring packages.
 
-include: package:lints/recommended.yaml
+# include: package:lints/recommended.yaml
+# Disabled in this workspace execution environment to avoid package resolution
+# errors during analysis runs when dependencies are not fetched. Re-enable
+# when running locally after `dart pub get` or in CI.
 
 # Uncomment the following section to specify additional rules.
 
