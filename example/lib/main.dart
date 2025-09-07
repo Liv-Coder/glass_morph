@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glass_morph/glass_morph.dart';
+import 'package:glass_morph_widgets/glass_morph_widgets.dart';
 
 void main() => runApp(const ExampleApp());
 

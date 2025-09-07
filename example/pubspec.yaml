@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  glass_morph:
+  glass_morph_widgets:
     path: ..
 
 dev_dependencies:

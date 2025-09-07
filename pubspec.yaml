@@ -1,10 +1,10 @@
-name: glass_morph
+name: glass_morph_widgets
 description: A pure-Dart Flutter package providing animated glass-morphism widgets with zero native code. Supports mobile, web, and desktop platforms.
 version: 1.0.0
-homepage: https://liv-coder.github.io/glass_morph
-repository: https://github.com/Liv-Coder/glass_morph
-documentation: https://github.com/Liv-Coder/glass_morph
-issue_tracker: https://github.com/Liv-Coder/glass_morph/issues
+homepage: https://liv-coder.github.io/glass_morph_widgets
+repository: https://github.com/Liv-Coder/glass_morph_widgets
+documentation: https://github.com/Liv-Coder/glass_morph_widgets
+issue_tracker: https://github.com/Liv-Coder/glass_morph_widgets/issues
 topics:
   - ui
   - widgets

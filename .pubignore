@@ -1,28 +1,33 @@
-# .pubignore
+# Memory bank files - internal documentation
+.kilocode/rules/memory-bank-instructions.md
+.kilocode/rules/memory-bank/architecture.md
+.kilocode/rules/memory-bank/brief.md
+.kilocode/rules/memory-bank/context.md
+.kilocode/rules/memory-bank/product.md
+.kilocode/rules/memory-bank/tasks.md
+.kilocode/rules/memory-bank/tech.md
 
-## Memory bank files
+# Build artifacts
+build/
+coverage/
 
-.kilocode/
+# Test cache
+test_cache/
 
-## GitHub workflows (not needed for package)
+# Git files
+.git/
+.gitignore
 
-.github/
+# IDE files
+.vscode/
+.idea/
 
-## Development files
+# OS files
+.DS_Store
+Thumbs.db
 
-analysis_options.yaml
+# Melos workspace files
 melos.yaml
 
-## Example app files (too large)
-
-example/android/
-example/ios/
-example/macos/
-example/windows/
-example/web/icons/
-example/web/manifest.json
-example/web/favicon.png
-
-## Test files
-
-test/goldens/
+# Documentation that shouldn't be published
+doc/
