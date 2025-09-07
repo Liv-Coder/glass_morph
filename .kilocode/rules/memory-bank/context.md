@@ -28,6 +28,8 @@ Recent changes
 - Enhanced CHANGELOG.md with comprehensive v1.0.0 release notes following Keep-a-Changelog format.
 - Updated README.md with demo badge/link placeholder and additional technical details.
 - Committed documentation updates with conventional commit: "docs: enhance CHANGELOG.md and add demo section to README.md".
+- Added pub.dev badges and links to README.md for package visibility.
+- Committed and pushed README update with conventional commit: "docs: add pub.dev badges and links to README".
 
 Next steps
 
