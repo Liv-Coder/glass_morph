@@ -1,5 +1,8 @@
 # glass_morph
 
+[![pub package](https://img.shields.io/pub/v/glass_morph.svg)](https://pub.dev/packages/glass_morph)
+[![pub points](https://img.shields.io/pub/points/glass_morph)](https://pub.dev/packages/glass_morph/score)
+
 A pure-Dart, cross-platform Flutter package providing animated glass-morphism widgets: GlassMorphButton, GlassMorphCard, GlassMorphFloatingActionButton.
 
 ## Demo
