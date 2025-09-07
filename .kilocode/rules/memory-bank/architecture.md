@@ -6,7 +6,7 @@ glass_morph is a lightweight, feature-focused Flutter package organized as a wor
 
 Source layout
 
-- packages/glass_morph/lib/
+- lib/
   - glass_morph.dart (public API)
   - src/
     - glass_morph_button.dart
@@ -17,7 +17,10 @@ Source layout
       - platform_check.dart
 - example/ (demo app)
 - test/ (unit and golden tests)
-- .github/workflows (CI)
+- docs/ (documentation)
+- .github/workflows/
+  - ci.yml (test, pana, coverage)
+  - gh-pages.yml (deploy example to GitHub Pages)
 
 Key design decisions
 

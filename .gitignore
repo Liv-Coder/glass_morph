@@ -2,15 +2,20 @@
 .dart_tool/
 .packages
 .pub/
+.pub-cache/
 build/
 pubspec.lock
 .flutter-plugins
 .flutter-plugins-dependencies
+.analysis_options_cache
 
 # IDE files
 .idea/
 .vscode/
+.kilocode/
 *.iml
+*.swp
+*.swo
 
 # iOS
 ios/Pods/
@@ -19,15 +24,29 @@ ios/Flutter/Flutter.podspec
 
 # Android
 **/local.properties
+android/key.properties
 
 # macOS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Windows
 windows/flutter/ephemeral/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # Generated plugin registrant
 generated_plugin_registrant.dart
+
+# Test coverage and failures
+coverage/
+test/**/failures/
 
 # Logs
 *.log
