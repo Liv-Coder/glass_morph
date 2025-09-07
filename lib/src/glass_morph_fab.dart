@@ -49,6 +49,8 @@ class _GlassMorphFloatingActionButtonState
     final mq = MediaQuery.of(context);
     final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
     final highContrast = mq.highContrast;
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     final duration = reduceMotion ? Duration.zero : widget.animationDuration;
     final size = widget.size;
@@ -60,11 +62,16 @@ class _GlassMorphFloatingActionButtonState
           )
         : null;
 
+    // Theme-aware background color for glass morphism effect
+    final backgroundColor = isDarkMode
+        ? theme.colorScheme.surface.withValues(alpha: widget.opacity)
+        : theme.colorScheme.onSurface.withValues(alpha: widget.opacity);
+
     Widget content = Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: widget.opacity),
+        color: backgroundColor,
         shape: BoxShape.circle,
         border: effectiveBorder,
         boxShadow: [

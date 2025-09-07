@@ -38,6 +38,8 @@ class GlassMorphCard extends StatelessWidget {
     final mq = MediaQuery.of(context);
     final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
     final highContrast = mq.highContrast;
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     final duration =
         reduceMotion ? Duration.zero : const Duration(milliseconds: 180);
@@ -54,10 +56,15 @@ class GlassMorphCard extends StatelessWidget {
               )
             : null);
 
+    // Theme-aware background color for glass morphism effect
+    final backgroundColor = isDarkMode
+        ? theme.colorScheme.surface.withValues(alpha: opacity)
+        : theme.colorScheme.onSurface.withValues(alpha: opacity);
+
     Widget content = Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: opacity),
+        color: backgroundColor,
         borderRadius: radius,
         border: effectiveBorder,
         boxShadow: shadow,

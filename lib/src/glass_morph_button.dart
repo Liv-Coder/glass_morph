@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
+import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 /// A lightweight, drop-in animated glass-morphism button.
 ///
@@ -90,7 +91,10 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
       child: Container(
         padding: widget.padding,
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: widget.opacity),
+          color: Theme.of(context)
+              .colorScheme
+              .surface
+              .withValues(alpha: widget.opacity),
           borderRadius: radius,
           border: effectiveBorder,
           boxShadow: widget.shadow,
@@ -133,7 +137,7 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
           curve: Curves.easeOut,
           // Small elevation change when pressed — visual polish only.
           transform: Matrix4.identity()
-            ..translate(0.0, _pressed ? 1.0 : 0.0, 0.0),
+            ..translateByVector3(Vector3(0.0, _pressed ? 1.0 : 0.0, 0.0)),
           child: content,
         ),
       ),

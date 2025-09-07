@@ -7,5 +7,7 @@ library glass_morph_widgets;
 export 'src/glass_morph_button.dart';
 export 'src/glass_morph_card.dart';
 export 'src/glass_morph_fab.dart';
+export 'src/glass_morph_bottom_sheet.dart';
+export 'src/glass_morph_dialog.dart';
 
 // Note: Keep public API small and stable.
