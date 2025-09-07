@@ -2,11 +2,18 @@
 
 A pure-Dart, cross-platform Flutter package providing animated glass-morphism widgets: GlassMorphButton, GlassMorphCard, GlassMorphFloatingActionButton.
 
+## Demo
+
+[![Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-blue)](https://liv-coder.github.io/glass_morph/)
+_Live demo showcasing all glass-morphism widgets_
+
 ## Features
 
 - Animated blur + scale interactions
 - Pure Dart (no native plugins) — works on mobile, desktop & web (HTML/CanvasKit)
 - Accessible defaults (Semantics, contrast)
+- Golden-file tests for visual regression
+- CI/CD pipeline with GitHub Actions
 
 ## Installation
 
