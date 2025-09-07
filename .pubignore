@@ -1,0 +1,28 @@
+# .pubignore
+
+## Memory bank files
+
+.kilocode/
+
+## GitHub workflows (not needed for package)
+
+.github/
+
+## Development files
+
+analysis_options.yaml
+melos.yaml
+
+## Example app files (too large)
+
+example/android/
+example/ios/
+example/macos/
+example/windows/
+example/web/icons/
+example/web/manifest.json
+example/web/favicon.png
+
+## Test files
+
+test/goldens/
