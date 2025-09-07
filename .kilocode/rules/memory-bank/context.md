@@ -17,10 +17,12 @@ Recent changes
 - Created CHANGELOG.md with initial v1.0.0 entry.
 - Package version set to 1.0.0 in pubspec.yaml.
 - Added docs/ directory for documentation.
+- Fixed Matrix4.translateByVector3 method error: replaced with Matrix4.translate(0.0, \_pressed ? 1.0 : 0.0, 0.0) and removed unused Vector3 import.
+- Committed and pushed Matrix4 fix with conventional commit: "fix: correct Matrix4 translate method usage in glass_morph_button.dart".
 
 Next steps
 
-- Accessibility updates pushed to main branch.
+- Matrix4 fix pushed to main branch.
 - Monitor GitHub Actions CI pipeline (should trigger automatically on push).
 - Wait for workflow run completion and confirm example app is live on GitHub Pages.
 - Update README with demo URL/badge after site confirmation.
