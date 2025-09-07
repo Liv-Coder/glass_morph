@@ -95,7 +95,8 @@ class GlassMorphDialog extends StatefulWidget {
     this.onDismissed,
     this.semanticLabel,
     this.semanticHint,
-  });
+  })  : assert(blur >= 0, 'Blur value must be non-negative'),
+        assert(opacity >= 0 && opacity <= 1, 'Opacity must be between 0 and 1');
 
   @override
   State<GlassMorphDialog> createState() => _GlassMorphDialogState();
@@ -160,12 +161,11 @@ class _GlassMorphDialogState extends State<GlassMorphDialog>
     }
   }
 
+  double get _clampedBlur => widget.blur.clamp(0.0, 50.0);
+
   Color get backgroundColor {
     final theme = Theme.of(context);
-    final isLight = theme.brightness == Brightness.light;
-    return isLight
-        ? Colors.black.withValues(alpha: widget.opacity)
-        : Colors.white.withValues(alpha: widget.opacity);
+    return theme.colorScheme.surface.withValues(alpha: widget.opacity);
   }
 
   @override
@@ -201,8 +201,8 @@ class _GlassMorphDialogState extends State<GlassMorphDialog>
                       child: Container(
                         margin: widget.margin,
                         child: Semantics(
-                          label: widget.semanticLabel,
-                          hint: widget.semanticHint,
+                          label: widget.semanticLabel ?? 'Glass dialog',
+                          hint: widget.semanticHint ?? 'Tap outside to dismiss',
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius:
@@ -215,8 +215,8 @@ class _GlassMorphDialogState extends State<GlassMorphDialog>
                                   BorderRadius.circular(widget.borderRadius),
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(
-                                  sigmaX: widget.blur,
-                                  sigmaY: widget.blur,
+                                  sigmaX: _clampedBlur,
+                                  sigmaY: _clampedBlur,
                                 ),
                                 child: Container(
                                   color: backgroundColor.withValues(

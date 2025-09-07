@@ -35,7 +35,8 @@ class GlassMorphBottomSheet extends StatefulWidget {
     this.border,
     this.shadow,
     this.padding = const EdgeInsets.all(16),
-  });
+  })  : assert(blur >= 0, 'Blur value must be non-negative'),
+        assert(opacity >= 0 && opacity <= 1, 'Opacity must be between 0 and 1');
 
   /// The content to display inside the bottom sheet.
   final Widget child;
@@ -45,6 +46,9 @@ class GlassMorphBottomSheet extends StatefulWidget {
 
   /// The opacity of the background tint.
   final double opacity;
+
+  /// Clamped blur value to prevent performance issues (max 50 sigma)
+  double get _clampedBlur => blur.clamp(0.0, 50.0);
 
   /// The border radius of the bottom sheet corners.
   final double borderRadius;
@@ -82,6 +86,8 @@ class GlassMorphBottomSheet extends StatefulWidget {
 
 class _GlassMorphBottomSheetState extends State<GlassMorphBottomSheet>
     with SingleTickerProviderStateMixin {
+  /// Clamped blur value to prevent performance issues (max 50 sigma)
+  double get _clampedBlur => widget.blur.clamp(0.0, 50.0);
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
   double _dragOffset = 0.0;
@@ -103,8 +109,15 @@ class _GlassMorphBottomSheetState extends State<GlassMorphBottomSheet>
       curve: Curves.easeOut,
     ));
 
-    // Start the slide-in animation
-    _animationController.forward();
+    // Start the slide-in animation (respect reduce motion)
+    final mq = MediaQuery.of(context);
+    final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
+    if (!reduceMotion) {
+      _animationController.forward();
+    } else {
+      // Skip animation and go directly to end state
+      _animationController.value = 1.0;
+    }
   }
 
   @override
@@ -135,39 +148,54 @@ class _GlassMorphBottomSheetState extends State<GlassMorphBottomSheet>
     if (!widget.enableDrag || !_isDragging) return;
     _isDragging = false;
 
+    final mq = MediaQuery.of(context);
+    final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
+
     final velocity = details.velocity.pixelsPerSecond.dy;
     final shouldDismiss = _dragOffset > 100 || velocity > 500;
 
     if (shouldDismiss) {
       _dismiss();
     } else {
-      // Snap back to original position
-      _animationController.forward();
+      // Snap back to original position (respect reduce motion)
+      if (!reduceMotion) {
+        _animationController.forward();
+      } else {
+        // Skip animation and go directly to start state
+        _animationController.value = 1.0;
+      }
       _dragOffset = 0.0;
     }
   }
 
   void _dismiss() {
-    _animationController.reverse().then((_) {
+    final mq = MediaQuery.of(context);
+    final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
+
+    if (!reduceMotion) {
+      _animationController.reverse().then((_) {
+        widget.onDismiss?.call();
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      });
+    } else {
+      // Skip animation and dismiss immediately
       widget.onDismiss?.call();
       if (mounted) {
         Navigator.of(context).pop();
       }
-    });
+    }
   }
 
   Color get backgroundColor {
     final theme = Theme.of(context);
-    final isLight = theme.brightness == Brightness.light;
-    return isLight
-        ? Colors.black.withValues(alpha: widget.opacity)
-        : Colors.white.withValues(alpha: widget.opacity);
+    return theme.colorScheme.surface.withValues(alpha: widget.opacity);
   }
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-    final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
     final highContrast = mq.highContrast;
 
     final effectiveBorder = widget.border ??
@@ -207,8 +235,8 @@ class _GlassMorphBottomSheetState extends State<GlassMorphBottomSheet>
       borderRadius: radius,
       child: BackdropFilter(
         filter: ImageFilter.blur(
-          sigmaX: widget.blur,
-          sigmaY: widget.blur,
+          sigmaX: _clampedBlur,
+          sigmaY: _clampedBlur,
         ),
         child: content,
       ),

@@ -14,11 +14,13 @@ class GlassMorphCard extends StatelessWidget {
     this.elevation = 0,
     this.margin = EdgeInsets.zero,
     this.clipBehavior = Clip.none,
+    this.animationDuration = const Duration(milliseconds: 180),
     this.border,
     this.shadow,
     this.semanticsLabel,
     this.semanticsOnTapHint,
-  });
+  })  : assert(blur >= 0, 'Blur value must be non-negative'),
+        assert(opacity >= 0 && opacity <= 1, 'Opacity must be between 0 and 1');
 
   final Widget child;
   final VoidCallback? onTap;
@@ -28,10 +30,14 @@ class GlassMorphCard extends StatelessWidget {
   final double elevation;
   final EdgeInsetsGeometry margin;
   final Clip clipBehavior;
+  final Duration animationDuration;
   final Border? border;
   final List<BoxShadow>? shadow;
   final String? semanticsLabel;
   final String? semanticsOnTapHint;
+
+  /// Clamped blur value to prevent performance issues (max 50 sigma)
+  double get _clampedBlur => blur.clamp(0.0, 50.0);
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +47,7 @@ class GlassMorphCard extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    final duration =
-        reduceMotion ? Duration.zero : const Duration(milliseconds: 180);
+    final duration = reduceMotion ? Duration.zero : animationDuration;
     final radius = BorderRadius.circular(borderRadius);
 
     final effectiveBorder = border ??
@@ -57,9 +62,8 @@ class GlassMorphCard extends StatelessWidget {
             : null);
 
     // Theme-aware background color for glass morphism effect
-    final backgroundColor = isDarkMode
-        ? theme.colorScheme.surface.withValues(alpha: opacity)
-        : theme.colorScheme.onSurface.withValues(alpha: opacity);
+    final backgroundColor =
+        theme.colorScheme.surface.withValues(alpha: opacity);
 
     Widget content = Container(
       padding: const EdgeInsets.all(16),
@@ -76,7 +80,7 @@ class GlassMorphCard extends StatelessWidget {
     content = ClipRRect(
       borderRadius: radius,
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+        filter: ImageFilter.blur(sigmaX: _clampedBlur, sigmaY: _clampedBlur),
         child: content,
       ),
     );
@@ -106,7 +110,8 @@ class GlassMorphCard extends StatelessWidget {
 
     return Semantics(
       label: semanticsLabel ?? 'Glass card',
-      onTapHint: semanticsOnTapHint,
+      onTapHint:
+          semanticsOnTapHint ?? (onTap != null ? 'Tap to activate' : null),
       container: true,
       child: card,
     );

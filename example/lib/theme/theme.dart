@@ -28,22 +28,22 @@ class AppTheme {
         surface: Color(AppColors.lightSurface),
         surfaceContainerHighest: Color(AppColors.lightSurfaceVariant),
         error: Color(AppColors.lightError),
-        errorContainer: Color(AppColors.lightError).withOpacity(0.1),
+        errorContainer: Color(AppColors.lightError).withValues(alpha: 0.1),
         onPrimary: Color(AppColors.lightOnPrimary),
         onSecondary: Color(AppColors.lightOnSecondary),
         onSurface: Color(AppColors.lightOnSurface),
         onSurfaceVariant: Color(AppColors.lightOnSurfaceVariant),
         onError: Color(AppColors.lightOnError),
         onErrorContainer: Color(AppColors.lightOnError),
-        outline: Color(AppColors.lightOnSurfaceVariant).withOpacity(0.5),
+        outline: Color(AppColors.lightOnSurfaceVariant).withValues(alpha: 0.5),
         outlineVariant:
-            Color(AppColors.lightOnSurfaceVariant).withOpacity(0.25),
-        shadow: Colors.black.withOpacity(0.1),
-        scrim: Colors.black.withOpacity(0.5),
+            Color(AppColors.lightOnSurfaceVariant).withValues(alpha: 0.25),
+        shadow: Colors.black.withValues(alpha: 0.1),
+        scrim: Colors.black.withValues(alpha: 0.5),
         inverseSurface: Color(AppColors.darkSurface),
         onInverseSurface: Color(AppColors.darkOnSurface),
         inversePrimary: Color(AppColors.darkPrimary),
-        surfaceTint: Color(AppColors.lightPrimary).withOpacity(0.1),
+        surfaceTint: Color(AppColors.lightPrimary).withValues(alpha: 0.1),
       ),
 
       // Enhanced app bar with gradient support
@@ -52,7 +52,7 @@ class AppTheme {
         foregroundColor: Color(AppColors.lightOnSurface),
         elevation: 0,
         centerTitle: true,
-        shadowColor: Colors.black.withOpacity(0.1),
+        shadowColor: Colors.black.withValues(alpha: 0.1),
         surfaceTintColor: Colors.transparent,
         titleTextStyle: TextStyle(
           color: Color(AppColors.lightOnSurface),
@@ -65,7 +65,7 @@ class AppTheme {
       // Enhanced card theme with glass morphism support
       cardTheme: CardThemeData(
         color: Color(AppColors.lightCardBackground),
-        shadowColor: Colors.black.withOpacity(0.1),
+        shadowColor: Colors.black.withValues(alpha: 0.1),
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -79,7 +79,7 @@ class AppTheme {
           backgroundColor: Color(AppColors.lightPrimary),
           foregroundColor: Color(AppColors.lightOnPrimary),
           elevation: 2,
-          shadowColor: Color(AppColors.lightPrimary).withOpacity(0.3),
+          shadowColor: Color(AppColors.lightPrimary).withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -93,10 +93,10 @@ class AppTheme {
           overlayColor: WidgetStateProperty.resolveWith<Color?>(
             (Set<WidgetState> states) {
               if (states.contains(WidgetState.pressed)) {
-                return Color(AppColors.lightOnPrimary).withOpacity(0.1);
+                return Color(AppColors.lightOnPrimary).withValues(alpha: 0.1);
               }
               if (states.contains(WidgetState.hovered)) {
-                return Color(AppColors.lightOnPrimary).withOpacity(0.05);
+                return Color(AppColors.lightOnPrimary).withValues(alpha: 0.05);
               }
               return null;
             },
@@ -251,12 +251,14 @@ class AppTheme {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-              color: Color(AppColors.lightOnSurfaceVariant).withOpacity(0.3)),
+              color: Color(AppColors.lightOnSurfaceVariant)
+                  .withValues(alpha: 0.3)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-              color: Color(AppColors.lightOnSurfaceVariant).withOpacity(0.3)),
+              color: Color(AppColors.lightOnSurfaceVariant)
+                  .withValues(alpha: 0.3)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -268,7 +270,7 @@ class AppTheme {
           fontSize: 16,
         ),
         hintStyle: TextStyle(
-          color: Color(AppColors.lightOnSurfaceVariant).withOpacity(0.7),
+          color: Color(AppColors.lightOnSurfaceVariant).withValues(alpha: 0.7),
           fontSize: 16,
         ),
       ),
@@ -305,21 +307,22 @@ class AppTheme {
         surface: Color(AppColors.darkSurface),
         surfaceContainerHighest: Color(AppColors.darkSurfaceVariant),
         error: Color(AppColors.darkError),
-        errorContainer: Color(AppColors.darkError).withOpacity(0.1),
+        errorContainer: Color(AppColors.darkError).withValues(alpha: 0.1),
         onPrimary: Color(AppColors.darkOnPrimary),
         onSecondary: Color(AppColors.darkOnSecondary),
         onSurface: Color(AppColors.darkOnSurface),
         onSurfaceVariant: Color(AppColors.darkOnSurfaceVariant),
         onError: Color(AppColors.darkOnError),
         onErrorContainer: Color(AppColors.darkOnError),
-        outline: Color(AppColors.darkOnSurfaceVariant).withOpacity(0.5),
-        outlineVariant: Color(AppColors.darkOnSurfaceVariant).withOpacity(0.25),
-        shadow: Colors.black.withOpacity(0.3),
-        scrim: Colors.black.withOpacity(0.6),
+        outline: Color(AppColors.darkOnSurfaceVariant).withValues(alpha: 0.5),
+        outlineVariant:
+            Color(AppColors.darkOnSurfaceVariant).withValues(alpha: 0.25),
+        shadow: Colors.black.withValues(alpha: 0.3),
+        scrim: Colors.black.withValues(alpha: 0.6),
         inverseSurface: Color(AppColors.lightSurface),
         onInverseSurface: Color(AppColors.lightOnSurface),
         inversePrimary: Color(AppColors.lightPrimary),
-        surfaceTint: Color(AppColors.darkPrimary).withOpacity(0.1),
+        surfaceTint: Color(AppColors.darkPrimary).withValues(alpha: 0.1),
       ),
 
       // Enhanced app bar with gradient support
@@ -328,7 +331,7 @@ class AppTheme {
         foregroundColor: Color(AppColors.darkOnSurface),
         elevation: 0,
         centerTitle: true,
-        shadowColor: Colors.black.withOpacity(0.3),
+        shadowColor: Colors.black.withValues(alpha: 0.3),
         surfaceTintColor: Colors.transparent,
         titleTextStyle: TextStyle(
           color: Color(AppColors.darkOnSurface),
@@ -341,7 +344,7 @@ class AppTheme {
       // Enhanced card theme with glass morphism support
       cardTheme: CardThemeData(
         color: Color(AppColors.darkCardBackground),
-        shadowColor: Colors.black.withOpacity(0.3),
+        shadowColor: Colors.black.withValues(alpha: 0.3),
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -355,7 +358,7 @@ class AppTheme {
           backgroundColor: Color(AppColors.darkPrimary),
           foregroundColor: Color(AppColors.darkOnPrimary),
           elevation: 2,
-          shadowColor: Color(AppColors.darkPrimary).withOpacity(0.3),
+          shadowColor: Color(AppColors.darkPrimary).withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -369,10 +372,10 @@ class AppTheme {
           overlayColor: WidgetStateProperty.resolveWith<Color?>(
             (Set<WidgetState> states) {
               if (states.contains(WidgetState.pressed)) {
-                return Color(AppColors.darkOnPrimary).withOpacity(0.1);
+                return Color(AppColors.darkOnPrimary).withValues(alpha: 0.1);
               }
               if (states.contains(WidgetState.hovered)) {
-                return Color(AppColors.darkOnPrimary).withOpacity(0.05);
+                return Color(AppColors.darkOnPrimary).withValues(alpha: 0.05);
               }
               return null;
             },
@@ -527,12 +530,14 @@ class AppTheme {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-              color: Color(AppColors.darkOnSurfaceVariant).withOpacity(0.3)),
+              color:
+                  Color(AppColors.darkOnSurfaceVariant).withValues(alpha: 0.3)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-              color: Color(AppColors.darkOnSurfaceVariant).withOpacity(0.3)),
+              color:
+                  Color(AppColors.darkOnSurfaceVariant).withValues(alpha: 0.3)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -543,7 +548,7 @@ class AppTheme {
           fontSize: 16,
         ),
         hintStyle: TextStyle(
-          color: Color(AppColors.darkOnSurfaceVariant).withOpacity(0.7),
+          color: Color(AppColors.darkOnSurfaceVariant).withValues(alpha: 0.7),
           fontSize: 16,
         ),
       ),

@@ -14,7 +14,8 @@ class GlassMorphFloatingActionButton extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 180),
     this.semanticsLabel,
     this.semanticsOnTapHint,
-  });
+  })  : assert(blur >= 0, 'Blur value must be non-negative'),
+        assert(opacity >= 0 && opacity <= 1, 'Opacity must be between 0 and 1');
 
   final Widget child;
   final VoidCallback? onPressed;
@@ -25,6 +26,9 @@ class GlassMorphFloatingActionButton extends StatefulWidget {
   final Duration animationDuration;
   final String? semanticsLabel;
   final String? semanticsOnTapHint;
+
+  /// Clamped blur value to prevent performance issues (max 50 sigma)
+  double get _clampedBlur => blur.clamp(0.0, 50.0);
 
   @override
   State<GlassMorphFloatingActionButton> createState() =>
@@ -42,7 +46,8 @@ class _GlassMorphFloatingActionButtonState
   }
 
   double get _scale => _pressed ? 0.92 : 1.0;
-  double get _currentBlur => _pressed ? widget.blur * 0.6 : widget.blur;
+  double get _currentBlur =>
+      _pressed ? widget._clampedBlur * 0.6 : widget._clampedBlur;
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +68,8 @@ class _GlassMorphFloatingActionButtonState
         : null;
 
     // Theme-aware background color for glass morphism effect
-    final backgroundColor = isDarkMode
-        ? theme.colorScheme.surface.withValues(alpha: widget.opacity)
-        : theme.colorScheme.onSurface.withValues(alpha: widget.opacity);
+    final backgroundColor =
+        theme.colorScheme.surface.withValues(alpha: widget.opacity);
 
     Widget content = Container(
       width: size,

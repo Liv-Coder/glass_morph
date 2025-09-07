@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
-import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 /// A lightweight, drop-in animated glass-morphism button.
 ///
@@ -27,7 +26,8 @@ class GlassMorphButton extends StatefulWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     this.semanticsLabel,
     this.semanticsOnTapHint,
-  });
+  })  : assert(blur >= 0, 'Blur value must be non-negative'),
+        assert(opacity >= 0 && opacity <= 1, 'Opacity must be between 0 and 1');
 
   final Widget child;
   final VoidCallback? onPressed;
@@ -46,6 +46,9 @@ class GlassMorphButton extends StatefulWidget {
   /// Optional semantic onTap hint (defaults to "Activate" when onPressed is provided).
   final String? semanticsOnTapHint;
 
+  /// Clamped blur value to prevent performance issues (max 50 sigma)
+  double get _clampedBlur => blur.clamp(0.0, 50.0);
+
   @override
   State<GlassMorphButton> createState() => _GlassMorphButtonState();
 }
@@ -60,7 +63,8 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
   }
 
   double get _scale => _pressed ? 0.96 : 1.0;
-  double get _currentBlur => _pressed ? widget.blur * 0.6 : widget.blur;
+  double get _currentBlur =>
+      _pressed ? widget._clampedBlur * 0.6 : widget._clampedBlur;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +141,7 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
           curve: Curves.easeOut,
           // Small elevation change when pressed — visual polish only.
           transform: Matrix4.identity()
-            ..translateByVector3(Vector3(0.0, _pressed ? 1.0 : 0.0, 0.0)),
+            ..translate(0.0, _pressed ? 1.0 : 0.0, 0.0),
           child: content,
         ),
       ),
