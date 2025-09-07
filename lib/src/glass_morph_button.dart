@@ -11,6 +11,7 @@ import 'dart:ui' show ImageFilter;
 /// )
 /// ```
 class GlassMorphButton extends StatefulWidget {
+  /// Adds optional semantic overrides for accessibility.
   const GlassMorphButton({
     super.key,
     required this.child,
@@ -23,6 +24,8 @@ class GlassMorphButton extends StatefulWidget {
     this.border,
     this.shadow,
     this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    this.semanticsLabel,
+    this.semanticsOnTapHint,
   });
 
   final Widget child;
@@ -35,6 +38,12 @@ class GlassMorphButton extends StatefulWidget {
   final Border? border;
   final List<BoxShadow>? shadow;
   final EdgeInsets padding;
+
+  /// Optional semantic label (defaults to "Glass button").
+  final String? semanticsLabel;
+
+  /// Optional semantic onTap hint (defaults to "Activate" when onPressed is provided).
+  final String? semanticsOnTapHint;
 
   @override
   State<GlassMorphButton> createState() => _GlassMorphButtonState();
@@ -54,8 +63,22 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
 
   @override
   Widget build(BuildContext context) {
-    final duration = widget.animationDuration;
+    final mq = MediaQuery.of(context);
+    // Respect user preference for reduced motion and accessible navigation.
+    final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
+    final highContrast = mq.highContrast;
+
+    final duration = reduceMotion ? Duration.zero : widget.animationDuration;
     final radius = BorderRadius.circular(widget.borderRadius);
+
+    // If high contrast is requested and no border provided, add a prominent border.
+    final effectiveBorder = widget.border ??
+        (highContrast
+            ? Border.all(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.9),
+                width: 2.0,
+              )
+            : null);
 
     Widget content = AnimatedScale(
       scale: widget.animate ? _scale : 1.0,
@@ -66,7 +89,7 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(widget.opacity),
           borderRadius: radius,
-          border: widget.border,
+          border: effectiveBorder,
           boxShadow: widget.shadow,
         ),
         child: DefaultTextStyle(
@@ -88,9 +111,12 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
       ),
     );
 
-    // Gesture handling
+    // Gesture handling with accessible semantics.
     return Semantics(
+      label: widget.semanticsLabel ?? 'Glass button',
       button: true,
+      onTapHint: widget.semanticsOnTapHint ??
+          (widget.onPressed != null ? 'Activate' : null),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTapDown: (_) => _setPressed(true),
