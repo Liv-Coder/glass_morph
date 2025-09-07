@@ -36,24 +36,26 @@ class DemoHome extends StatelessWidget {
                 GlassMorphCard(
                   elevation: 8,
                   margin: const EdgeInsets.symmetric(vertical: 8),
-                  padding: const EdgeInsets.all(20),
                   borderRadius: 16,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text(
-                        'GlassMorphCard',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'This is an example card using glass_morph.',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Text(
+                          'GlassMorphCard',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'This is an example card using glass_morph.',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -66,8 +68,8 @@ class DemoHome extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 // Inline FAB-like button demo
-                GlassMorphFAB(
-                  tooltip: 'Demo FAB',
+                GlassMorphFloatingActionButton(
+                  semanticsLabel: 'Demo FAB',
                   onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('FAB pressed'))),
                   child: const Icon(Icons.add),
@@ -77,8 +79,8 @@ class DemoHome extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: GlassMorphFAB(
-        tooltip: 'Add',
+      floatingActionButton: GlassMorphFloatingActionButton(
+        semanticsLabel: 'Add',
         onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('FloatingActionButton pressed'))),
         child: const Icon(Icons.add),

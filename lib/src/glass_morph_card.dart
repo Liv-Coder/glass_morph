@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
 
-/// A glass-morphism Card widget with optional tap handling and elevation.
-///
-/// Designed to mirror the Button API where appropriate and remain pure-Dart / web-safe.
+/// A lightweight glass-morphism card surface.
+/// Non-interactive by default; provide [onTap] to make it tappable.
 class GlassMorphCard extends StatelessWidget {
   const GlassMorphCard({
     super.key,
     required this.child,
     this.onTap,
     this.blur = 12,
-    this.opacity = 0.2,
-    this.borderRadius = 16,
-    this.elevation = 4,
-    this.margin = const EdgeInsets.all(8),
-    this.clipBehavior = Clip.antiAlias,
+    this.opacity = 0.15,
+    this.borderRadius = 12,
+    this.elevation = 0,
+    this.margin = EdgeInsets.zero,
+    this.clipBehavior = Clip.none,
     this.border,
     this.shadow,
-    this.padding = const EdgeInsets.all(16),
+    this.semanticsLabel,
+    this.semanticsOnTapHint,
   });
 
   final Widget child;
@@ -26,61 +26,82 @@ class GlassMorphCard extends StatelessWidget {
   final double opacity;
   final double borderRadius;
   final double elevation;
-  final EdgeInsets margin;
+  final EdgeInsetsGeometry margin;
   final Clip clipBehavior;
   final Border? border;
   final List<BoxShadow>? shadow;
-  final EdgeInsets padding;
+  final String? semanticsLabel;
+  final String? semanticsOnTapHint;
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
+    final highContrast = mq.highContrast;
+
+    final duration =
+        reduceMotion ? Duration.zero : const Duration(milliseconds: 180);
     final radius = BorderRadius.circular(borderRadius);
 
+    final effectiveBorder = border ??
+        (highContrast
+            ? Border.all(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.9),
+                width: 2.0,
+              )
+            : null);
+
     Widget content = Container(
-      padding: padding,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withAlpha((opacity.clamp(0.0, 1.0) * 255).round()),
+        color: Colors.white.withValues(alpha: opacity),
         borderRadius: radius,
-        border: border,
+        border: effectiveBorder,
         boxShadow: shadow,
       ),
-      child: DefaultTextStyle(
-        style: Theme.of(context).textTheme.bodyMedium ?? const TextStyle(),
-        child: child,
+      child: child,
+    );
+
+    // Blur the background behind the card.
+    content = ClipRRect(
+      borderRadius: radius,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+        child: content,
       ),
     );
 
-    content = ClipRRect(
-      borderRadius: radius,
-      clipBehavior: clipBehavior,
-      child: RepaintBoundary(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: blur,
-            sigmaY: blur,
-          ),
+    // Wrap with InkWell if interactive.
+    if (onTap != null) {
+      content = InkWell(
+        borderRadius: radius,
+        onTap: onTap,
+        child: content,
+      );
+    }
+
+    final card = AnimatedContainer(
+      duration: duration,
+      child: Material(
+        type: MaterialType.transparency,
+        elevation: elevation,
+        clipBehavior: clipBehavior,
+        shape: RoundedRectangleBorder(borderRadius: radius),
+        child: Padding(
+          padding: margin,
           child: content,
         ),
       ),
     );
 
-    final decorated = Material(
-      type: MaterialType.transparency,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: radius,
-        child: content,
-      ),
-    );
-
-    return Padding(
-      padding: margin,
-      child: Semantics(
-        container: true,
-        button: onTap != null,
-        label: child is Text ? (child as Text).data : null,
-        child: decorated,
-      ),
+    return Semantics(
+      label: semanticsLabel ?? 'Glass card',
+      onTapHint: semanticsOnTapHint,
+      container: true,
+      child: card,
     );
   }
 }

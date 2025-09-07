@@ -65,8 +65,8 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: Center(
-            child: GlassMorphFAB(
-              tooltip: 'Add',
+            child: GlassMorphFloatingActionButton(
+              semanticsLabel: 'Add',
               onPressed: () => tapped = true,
               child: const Icon(Icons.add),
             ),
@@ -75,9 +75,9 @@ void main() {
       ),
     );
 
-    expect(find.byTooltip('Add'), findsOneWidget);
+    expect(find.bySemanticsLabel('Add'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Add'));
+    await tester.tap(find.bySemanticsLabel('Add'));
     await tester.pumpAndSettle();
 
     expect(tapped, isTrue);
@@ -142,7 +142,7 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: Center(
-            child: GlassMorphFAB(
+            child: GlassMorphFloatingActionButton(
               onPressed: () {},
               child: const Icon(Icons.add),
             ),
@@ -154,7 +154,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await expectLater(
-      find.byType(GlassMorphFAB),
+      find.byType(GlassMorphFloatingActionButton),
       matchesGoldenFile('goldens/glass_morph_fab.png'),
     );
   });

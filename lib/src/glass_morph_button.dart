@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
+import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 /// A lightweight, drop-in animated glass-morphism button.
 ///
@@ -11,6 +12,7 @@ import 'dart:ui' show ImageFilter;
 /// )
 /// ```
 class GlassMorphButton extends StatefulWidget {
+  /// Adds optional semantic overrides for accessibility.
   const GlassMorphButton({
     super.key,
     required this.child,
@@ -23,6 +25,8 @@ class GlassMorphButton extends StatefulWidget {
     this.border,
     this.shadow,
     this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    this.semanticsLabel,
+    this.semanticsOnTapHint,
   });
 
   final Widget child;
@@ -35,6 +39,12 @@ class GlassMorphButton extends StatefulWidget {
   final Border? border;
   final List<BoxShadow>? shadow;
   final EdgeInsets padding;
+
+  /// Optional semantic label (defaults to "Glass button").
+  final String? semanticsLabel;
+
+  /// Optional semantic onTap hint (defaults to "Activate" when onPressed is provided).
+  final String? semanticsOnTapHint;
 
   @override
   State<GlassMorphButton> createState() => _GlassMorphButtonState();
@@ -54,8 +64,25 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
 
   @override
   Widget build(BuildContext context) {
-    final duration = widget.animationDuration;
+    final mq = MediaQuery.of(context);
+    // Respect user preference for reduced motion and accessible navigation.
+    final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
+    final highContrast = mq.highContrast;
+
+    final duration = reduceMotion ? Duration.zero : widget.animationDuration;
     final radius = BorderRadius.circular(widget.borderRadius);
+
+    // If high contrast is requested and no border provided, add a prominent border.
+    final effectiveBorder = widget.border ??
+        (highContrast
+            ? Border.all(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.9),
+                width: 2.0,
+              )
+            : null);
 
     Widget content = AnimatedScale(
       scale: widget.animate ? _scale : 1.0,
@@ -64,10 +91,9 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
       child: Container(
         padding: widget.padding,
         decoration: BoxDecoration(
-          color: Colors.white
-              .withAlpha((widget.opacity.clamp(0.0, 1.0) * 255).round()),
+          color: Colors.white.withValues(alpha: widget.opacity),
           borderRadius: radius,
-          border: widget.border,
+          border: effectiveBorder,
           boxShadow: widget.shadow,
         ),
         child: DefaultTextStyle(
@@ -78,26 +104,23 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
     );
 
     // Apply blur via BackdropFilter inside a clipped container.
-    // Wrap BackdropFilter with RepaintBoundary to avoid propagating repaints
-    // to the parent when the blur changes.
     content = ClipRRect(
       borderRadius: radius,
-      child: RepaintBoundary(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: _currentBlur,
-            sigmaY: _currentBlur,
-          ),
-          child: content,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: _currentBlur,
+          sigmaY: _currentBlur,
         ),
+        child: content,
       ),
     );
 
-    // Gesture handling + accessibility metadata
+    // Gesture handling with accessible semantics.
     return Semantics(
+      label: widget.semanticsLabel ?? 'Glass button',
       button: true,
-      onTapHint: widget.onPressed == null ? null : 'Activate',
-      label: widget.child is Text ? (widget.child as Text).data : null,
+      onTapHint: widget.semanticsOnTapHint ??
+          (widget.onPressed != null ? 'Activate' : null),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTapDown: (_) => _setPressed(true),
@@ -110,7 +133,8 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
           duration: duration,
           curve: Curves.easeOut,
           // Small elevation change when pressed — visual polish only.
-          transform: Matrix4.translationValues(0.0, _pressed ? 1.0 : 0.0, 0.0),
+          transform: Matrix4.identity()
+            ..translateByVector3(Vector3(0.0, _pressed ? 1.0 : 0.0, 0.0)),
           child: content,
         ),
       ),
