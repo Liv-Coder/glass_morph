@@ -15,6 +15,20 @@ _Live demo showcasing all glass-morphism widgets_
 - Golden-file tests for visual regression
 - CI/CD pipeline with GitHub Actions
 
+## Screenshots
+
+### GlassMorphButton
+
+![GlassMorphButton](https://raw.githubusercontent.com/Liv-Coder/glass_morph/main/screenshots/glass_morph_button.png)
+
+### GlassMorphCard
+
+![GlassMorphCard](https://raw.githubusercontent.com/Liv-Coder/glass_morph/main/screenshots/glass_morph_card.png)
+
+### GlassMorphFloatingActionButton
+
+![GlassMorphFloatingActionButton](https://raw.githubusercontent.com/Liv-Coder/glass_morph/main/screenshots/glass_morph_fab.png)
+
 ## Installation
 
 Add to your pubspec.yaml:

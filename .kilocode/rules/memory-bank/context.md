@@ -31,10 +31,14 @@ Recent changes
 
 Next steps
 
-- Matrix4 fix pushed to main branch.
-- Monitor GitHub Actions CI pipeline (should trigger automatically on push).
-- Wait for workflow run completion and confirm example app is live on GitHub Pages.
-- Update README with demo URL/badge after site confirmation.
+- Fixed GitHub Pages white page issue by adding --base-href="/glass_morph/" to flutter build web command.
+- Restored memory bank files that were accidentally deleted.
+- Committed and pushed base href fix with conventional commit: "fix: add base href for GitHub Pages deployment and restore memory bank files".
+- Pushed changes to main branch, triggering GitHub Actions deployment workflow.
+- Monitor GitHub Actions CI pipeline for successful build and deployment to gh-pages branch.
+- Wait for workflow run completion and confirm example app is live on GitHub Pages at <https://liv-coder.github.io/glass_morph/>.
+- Test the demo URL to verify it loads correctly with the glass-morphism widgets.
+- Update README with working demo URL/badge once confirmed functional.
 - Prepare for v1.0.0 release: update quality gates, enhance CHANGELOG.md, deploy example to GitHub Pages.
 - Consider roadmap items: GlassMorphBottomSheet, GlassMorphDialog, Figma plugin.
 

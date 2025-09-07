@@ -3,7 +3,14 @@ description: A pure-Dart Flutter package providing animated glass-morphism widge
 version: 1.0.0
 homepage: https://liv-coder.github.io/glass_morph
 repository: https://github.com/Liv-Coder/glass_morph
-publish_to: none
+documentation: https://github.com/Liv-Coder/glass_morph
+issue_tracker: https://github.com/Liv-Coder/glass_morph/issues
+topics:
+  - ui
+  - widgets
+  - glassmorphism
+  - animation
+  - flutter
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
