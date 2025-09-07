@@ -133,7 +133,7 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
           curve: Curves.easeOut,
           // Small elevation change when pressed — visual polish only.
           transform: Matrix4.identity()
-            ..translate(0.0, _pressed ? 1.0 : 0.0, 0.0),
+            ..translateByDouble(0.0, _pressed ? 1.0 : 0.0, 0.0, 1.0),
           child: content,
         ),
       ),
