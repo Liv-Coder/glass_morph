@@ -20,9 +20,10 @@ Recent changes
 
 Next steps
 
-- Run `flutter analyze` to confirm all linting issues resolved.
-- Push accessibility updates to main branch.
-- Monitor GitHub Actions CI pipeline.
+- Accessibility updates pushed to main branch.
+- Monitor GitHub Actions CI pipeline (should trigger automatically on push).
+- Wait for workflow run completion and confirm example app is live on GitHub Pages.
+- Update README with demo URL/badge after site confirmation.
 - Prepare for v1.0.0 release: update quality gates, enhance CHANGELOG.md, deploy example to GitHub Pages.
 - Consider roadmap items: GlassMorphBottomSheet, GlassMorphDialog, Figma plugin.
 
