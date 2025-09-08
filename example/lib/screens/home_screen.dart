@@ -154,6 +154,53 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 24),
 
+                // GlassMorphAppBar Showcase
+                _buildWidgetSection(
+                  context,
+                  title: 'GlassMorphAppBar',
+                  description:
+                      'App bar with glass-morphism effect and backdrop blur',
+                  child: Container(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: colorScheme.surface.withValues(alpha: 0.1),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: GlassMorphAppBar(
+                        title: Text(
+                          'Glass Morph App Bar',
+                          style: TextStyle(
+                            color: colorScheme.onSurface,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        blur: 12,
+                        opacity: 0.2,
+                        actions: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.search,
+                              color: colorScheme.onSurface,
+                            ),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: colorScheme.onSurface,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
                 // GlassMorphBottomSheet Showcase
                 _buildWidgetSection(
                   context,

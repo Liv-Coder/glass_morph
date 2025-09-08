@@ -4,6 +4,7 @@
 library glass_morph_widgets;
 
 // Exports
+export 'src/glass_morph_app_bar.dart';
 export 'src/glass_morph_button.dart';
 export 'src/glass_morph_card.dart';
 export 'src/glass_morph_fab.dart';

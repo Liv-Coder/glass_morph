@@ -3,7 +3,7 @@
 [![pub package](https://img.shields.io/pub/v/glass_morph_widgets.svg)](https://pub.dev/packages/glass_morph_widgets)
 [![pub points](https://img.shields.io/pub/points/glass_morph_widgets)](https://pub.dev/packages/glass_morph_widgets/score)
 
-A pure-Dart, cross-platform Flutter package providing animated glass-morphism widgets: GlassMorphButton, GlassMorphCard, GlassMorphFloatingActionButton.
+A pure-Dart, cross-platform Flutter package providing animated glass-morphism widgets: GlassMorphButton, GlassMorphCard, GlassMorphFloatingActionButton, GlassMorphAppBar.
 
 ## Demo
 
@@ -32,6 +32,10 @@ _Live demo showcasing all glass-morphism widgets_
 
 ![GlassMorphFloatingActionButton](https://raw.githubusercontent.com/Liv-Coder/glass_morph_widgets/main/screenshots/glass_morph_fab.png)
 
+### GlassMorphAppBar
+
+![GlassMorphAppBar](https://raw.githubusercontent.com/Liv-Coder/glass_morph_widgets/main/screenshots/glass_morph_app_bar.png)
+
 ## Installation
 
 Add to your pubspec.yaml:
@@ -46,9 +50,18 @@ dependencies:
 ```dart
 import 'package:glass_morph_widgets/glass_morph_widgets.dart';
 
-GlassMorphButton(
-  onPressed: () {},
-  child: Text('Upgrade to Pro'),
+Scaffold(
+  appBar: GlassMorphAppBar(
+    title: Text('My App'),
+    blur: 12,
+    opacity: 0.2,
+  ),
+  body: Center(
+    child: GlassMorphButton(
+      onPressed: () {},
+      child: Text('Upgrade to Pro'),
+    ),
+  ),
 );
 ```
 
