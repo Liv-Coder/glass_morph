@@ -17,11 +17,12 @@ mixin ScrollAwareGlassMorph<T extends StatefulWidget> on State<T> {
   /// The velocity threshold above which blur increases.
   double get velocityThreshold => 1000.0; // pixels per second
 
-  /// Current scroll velocity in pixels per second.
-  double _currentVelocity = 0.0;
-
   /// Animation controller for smooth blur transitions.
   late AnimationController _blurController;
+
+  /// Variables for velocity calculation
+  double _previousPosition = 0.0;
+  DateTime _lastUpdateTime = DateTime.now();
   late Animation<double> _blurAnimation;
 
   /// Must be implemented by the class using this mixin to provide TickerProvider.
@@ -81,8 +82,6 @@ mixin ScrollAwareGlassMorph<T extends StatefulWidget> on State<T> {
 
       _blurController.forward(from: 0.0);
     }
-
-    _currentVelocity = absVelocity;
   }
 
   /// Get the current dynamic blur value based on scroll velocity.

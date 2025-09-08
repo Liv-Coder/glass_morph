@@ -59,9 +59,6 @@ class GlassMorphButton extends StatefulWidget {
   /// Optional semantic onTap hint (defaults to "Activate" when onPressed is provided).
   final String? semanticsOnTapHint;
 
-  /// Clamped blur value to prevent performance issues (max 50 sigma)
-  double get _clampedBlur => blur.clamp(0.0, 50.0);
-
   @override
   State<GlassMorphButton> createState() => _GlassMorphButtonState();
 }
@@ -93,8 +90,6 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
     final radius = BorderRadius.circular(widget.borderRadius);
 
     // Apply variant configuration if provided
-    final effectiveBlur =
-        widget.variantConfig?.getEffectiveBlur(widget.blur) ?? widget.blur;
     final effectiveOpacity =
         widget.variantConfig?.getEffectiveOpacity(widget.opacity) ??
             widget.opacity;
@@ -151,11 +146,28 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
     );
 
     // Gesture handling with accessible semantics.
+    // Generate more descriptive semantic label based on content
+    String generateSemanticLabel() {
+      if (widget.semanticsLabel != null) return widget.semanticsLabel!;
+
+      // Try to extract text from child widget for better context
+      String contentDescription = 'Glass button';
+      if (widget.child is Text) {
+        final textContent = (widget.child as Text).data ?? '';
+        if (textContent.isNotEmpty) {
+          contentDescription = '$textContent button';
+        }
+      }
+
+      return contentDescription;
+    }
+
     return Semantics(
-      label: widget.semanticsLabel ?? 'Glass button',
+      label: generateSemanticLabel(),
       button: true,
+      enabled: widget.onPressed != null,
       onTapHint: widget.semanticsOnTapHint ??
-          (widget.onPressed != null ? 'Activate' : null),
+          (widget.onPressed != null ? 'Tap to activate' : null),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTapDown: (_) => _setPressed(true),

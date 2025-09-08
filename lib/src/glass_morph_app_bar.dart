@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
+import 'utils/glass_gradient_config.dart';
 
 /// GlassMorphAppBar: glass-morphism app bar with accessible semantics, highContrast and reduceMotion.
 class GlassMorphAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -13,6 +14,7 @@ class GlassMorphAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.animationDuration = const Duration(milliseconds: 180),
     this.border,
     this.shadow,
+    this.gradientConfig,
     this.semanticsLabel,
     this.semanticsOnTapHint,
     this.centerTitle,
@@ -36,6 +38,7 @@ class GlassMorphAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Duration animationDuration;
   final Border? border;
   final List<BoxShadow>? shadow;
+  final GlassGradientConfig? gradientConfig;
   final String? semanticsLabel;
   final String? semanticsOnTapHint;
 
@@ -53,7 +56,6 @@ class GlassMorphAppBar extends StatelessWidget implements PreferredSizeWidget {
     final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
     final highContrast = mq.highContrast;
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
 
     final duration = reduceMotion ? Duration.zero : animationDuration;
 
@@ -76,7 +78,8 @@ class GlassMorphAppBar extends StatelessWidget implements PreferredSizeWidget {
       height: toolbarHeight,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: gradientConfig == null ? backgroundColor : null,
+        gradient: gradientConfig?.gradient,
         border: effectiveBorder,
         boxShadow: shadow,
       ),
@@ -129,9 +132,26 @@ class GlassMorphAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
+    // Generate more descriptive semantic label based on content
+    String generateSemanticLabel() {
+      if (semanticsLabel != null) return semanticsLabel!;
+
+      // Try to extract title text for better context
+      String contentDescription = 'Glass app bar';
+      if (title is Text) {
+        final titleText = (title as Text).data ?? '';
+        if (titleText.isNotEmpty) {
+          contentDescription = 'App bar with $titleText';
+        }
+      }
+
+      return contentDescription;
+    }
+
     return Semantics(
       container: true,
-      label: semanticsLabel ?? 'Glass app bar',
+      label: generateSemanticLabel(),
+      onTapHint: semanticsOnTapHint,
       child: result,
     );
   }

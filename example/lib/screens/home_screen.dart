@@ -393,8 +393,6 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                const SizedBox(height: 32),
-
                 // Gradient Backgrounds Showcase Section
                 Text(
                   'Gradient Backgrounds',
@@ -422,6 +420,205 @@ class HomeScreen extends StatelessWidget {
                     gradientConfig: GlassGradientConfig.ocean,
                     child: Text(
                       'Ocean',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Sunset Gradient Showcase
+                _buildWidgetSection(
+                  context,
+                  title: 'Sunset Gradient',
+                  description: 'Warm sunset colors with glass-morphism effects',
+                  child: GlassMorphButton(
+                    onPressed: () {},
+                    blur: 12,
+                    opacity: 0.2,
+                    borderRadius: 16,
+                    animate: true,
+                    gradientConfig: GlassGradientConfig.sunset,
+                    child: Text(
+                      'Sunset',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Forest Gradient Showcase
+                _buildWidgetSection(
+                  context,
+                  title: 'Forest Gradient',
+                  description:
+                      'Natural forest colors with radial gradient effect',
+                  child: GlassMorphButton(
+                    onPressed: () {},
+                    blur: 12,
+                    opacity: 0.2,
+                    borderRadius: 16,
+                    animate: true,
+                    gradientConfig: GlassGradientConfig.forest,
+                    child: Text(
+                      'Forest',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Cosmic Gradient Showcase
+                _buildWidgetSection(
+                  context,
+                  title: 'Cosmic Gradient',
+                  description:
+                      'Vibrant cosmic colors with sweep gradient effect',
+                  child: GlassMorphButton(
+                    onPressed: () {},
+                    blur: 12,
+                    opacity: 0.2,
+                    borderRadius: 16,
+                    animate: true,
+                    gradientConfig: GlassGradientConfig.cosmic,
+                    child: Text(
+                      'Cosmic',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
+                // Interactive Animations Section
+                Text(
+                  'Interactive Animations',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Animation Showcase with different durations
+                _buildWidgetSection(
+                  context,
+                  title: 'Fast Animation',
+                  description: 'Quick 150ms animation for responsive feel',
+                  child: GlassMorphButton(
+                    onPressed: () {},
+                    blur: 12,
+                    opacity: 0.2,
+                    borderRadius: 16,
+                    animate: true,
+                    animationDuration: const Duration(milliseconds: 150),
+                    child: Text(
+                      'Fast',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Slow Animation Showcase
+                _buildWidgetSection(
+                  context,
+                  title: 'Slow Animation',
+                  description: 'Gentle 500ms animation for elegant feel',
+                  child: GlassMorphButton(
+                    onPressed: () {},
+                    blur: 12,
+                    opacity: 0.2,
+                    borderRadius: 16,
+                    animate: true,
+                    animationDuration: const Duration(milliseconds: 500),
+                    child: Text(
+                      'Slow',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
+                // Blur Variations Section
+                Text(
+                  'Blur Variations',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Subtle Blur
+                _buildWidgetSection(
+                  context,
+                  title: 'Subtle Blur',
+                  description: 'Light 8px blur for minimal glass effect',
+                  child: GlassMorphButton(
+                    onPressed: () {},
+                    blur: 8,
+                    opacity: 0.15,
+                    borderRadius: 16,
+                    animate: true,
+                    child: Text(
+                      'Subtle',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Strong Blur
+                _buildWidgetSection(
+                  context,
+                  title: 'Strong Blur',
+                  description: 'Heavy 20px blur for dramatic glass effect',
+                  child: GlassMorphButton(
+                    onPressed: () {},
+                    blur: 20,
+                    opacity: 0.25,
+                    borderRadius: 16,
+                    animate: true,
+                    child: Text(
+                      'Strong',
                       style: TextStyle(
                         fontSize: 16,
                         color: colorScheme.onSurface,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'glass_border_config.dart';
+import 'package:flutter/material.dart';
 
 /// Configuration for different glass morph widget variants
 enum GlassVariant {
@@ -26,6 +28,9 @@ class GlassVariantConfig {
   /// Border configuration for outlined variant
   final Border? border;
 
+  /// Custom border configuration with shadows and styling
+  final GlassBorderConfig? borderConfig;
+
   /// Opacity for ghost variant
   final double ghostOpacity;
 
@@ -36,6 +41,7 @@ class GlassVariantConfig {
     required this.variant,
     this.fillColor,
     this.border,
+    this.borderConfig,
     this.ghostOpacity = 0.05,
     this.ghostBlur = 4.0,
   });

@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import 'utils/glass_gradient_config.dart';
+
 /// A glass-morphism dialog widget with animated blur effects and accessibility support.
 ///
 /// This widget provides a modal dialog with glass-morphism styling, featuring:
@@ -78,6 +80,9 @@ class GlassMorphDialog extends StatefulWidget {
   /// The semantic hint for accessibility.
   final String? semanticHint;
 
+  /// When provided, replaces the solid color background with a gradient.
+  final GlassGradientConfig? gradientConfig;
+
   const GlassMorphDialog({
     super.key,
     required this.child,
@@ -95,6 +100,7 @@ class GlassMorphDialog extends StatefulWidget {
     this.onDismissed,
     this.semanticLabel,
     this.semanticHint,
+    this.gradientConfig,
   })  : assert(blur >= 0, 'Blur value must be non-negative'),
         assert(opacity >= 0 && opacity <= 1, 'Opacity must be between 0 and 1');
 
@@ -168,6 +174,22 @@ class _GlassMorphDialogState extends State<GlassMorphDialog>
     return theme.colorScheme.surface.withValues(alpha: widget.opacity);
   }
 
+  /// Returns the gradient decoration if gradientConfig is provided, otherwise null
+  Decoration? get _gradientDecoration {
+    if (widget.gradientConfig != null) {
+      final gradient = widget.gradientConfig!.toGradient();
+      if (gradient != null) {
+        return BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          border: widget.border,
+          boxShadow: widget.shadow,
+        );
+      }
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final highContrast = MediaQuery.highContrastOf(context);
@@ -219,8 +241,11 @@ class _GlassMorphDialogState extends State<GlassMorphDialog>
                                   sigmaY: _clampedBlur,
                                 ),
                                 child: Container(
-                                  color: backgroundColor.withValues(
-                                      alpha: adjustedOpacity),
+                                  decoration: _gradientDecoration ??
+                                      BoxDecoration(
+                                        color: backgroundColor.withValues(
+                                            alpha: adjustedOpacity),
+                                      ),
                                   padding: widget.padding,
                                   child: Stack(
                                     children: [

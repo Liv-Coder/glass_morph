@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
+import 'utils/glass_gradient_config.dart';
 
 /// A glass-morphism bottom sheet with slide animations and drag-to-dismiss functionality.
 ///
@@ -34,6 +35,7 @@ class GlassMorphBottomSheet extends StatefulWidget {
     this.semanticsHint,
     this.border,
     this.shadow,
+    this.gradientConfig,
     this.padding = const EdgeInsets.all(16),
   })  : assert(blur >= 0, 'Blur value must be non-negative'),
         assert(opacity >= 0 && opacity <= 1, 'Opacity must be between 0 and 1');
@@ -46,9 +48,6 @@ class GlassMorphBottomSheet extends StatefulWidget {
 
   /// The opacity of the background tint.
   final double opacity;
-
-  /// Clamped blur value to prevent performance issues (max 50 sigma)
-  double get _clampedBlur => blur.clamp(0.0, 50.0);
 
   /// The border radius of the bottom sheet corners.
   final double borderRadius;
@@ -76,6 +75,10 @@ class GlassMorphBottomSheet extends StatefulWidget {
 
   /// Optional shadow for the bottom sheet.
   final List<BoxShadow>? shadow;
+
+  /// Optional gradient configuration for background effects.
+  /// When provided, replaces the solid color background with a gradient.
+  final GlassGradientConfig? gradientConfig;
 
   /// Padding around the child content.
   final EdgeInsets padding;
@@ -108,6 +111,11 @@ class _GlassMorphBottomSheetState extends State<GlassMorphBottomSheet>
       parent: _animationController,
       curve: Curves.easeOut,
     ));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     // Start the slide-in animation (respect reduce motion)
     final mq = MediaQuery.of(context);
@@ -215,7 +223,8 @@ class _GlassMorphBottomSheetState extends State<GlassMorphBottomSheet>
     Widget content = Container(
       padding: widget.padding,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: widget.gradientConfig == null ? backgroundColor : null,
+        gradient: widget.gradientConfig?.gradient,
         borderRadius: radius,
         border: effectiveBorder,
         boxShadow: widget.shadow ??

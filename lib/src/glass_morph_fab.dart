@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
 import 'package:flutter/services.dart';
+import 'utils/glass_gradient_config.dart';
 
 /// GlassMorphFloatingActionButton: glass FAB with accessible semantics, highContrast and reduceMotion.
 class GlassMorphFloatingActionButton extends StatefulWidget {
@@ -13,6 +14,7 @@ class GlassMorphFloatingActionButton extends StatefulWidget {
     this.size = 56,
     this.animate = true,
     this.animationDuration = const Duration(milliseconds: 180),
+    this.gradientConfig,
     this.semanticsLabel,
     this.semanticsOnTapHint,
   })  : assert(blur >= 0, 'Blur value must be non-negative'),
@@ -25,11 +27,9 @@ class GlassMorphFloatingActionButton extends StatefulWidget {
   final double size;
   final bool animate;
   final Duration animationDuration;
+  final GlassGradientConfig? gradientConfig;
   final String? semanticsLabel;
   final String? semanticsOnTapHint;
-
-  /// Clamped blur value to prevent performance issues (max 50 sigma)
-  double get _clampedBlur => blur.clamp(0.0, 50.0);
 
   @override
   State<GlassMorphFloatingActionButton> createState() =>
@@ -47,8 +47,7 @@ class _GlassMorphFloatingActionButtonState
   }
 
   double get _scale => _pressed ? 0.92 : 1.0;
-  double get _currentBlur =>
-      _pressed ? widget._clampedBlur * 0.6 : widget._clampedBlur;
+  double get _currentBlur => _pressed ? widget.blur * 0.6 : widget.blur;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +55,6 @@ class _GlassMorphFloatingActionButtonState
     final reduceMotion = mq.disableAnimations || mq.accessibleNavigation;
     final highContrast = mq.highContrast;
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
 
     final duration = reduceMotion ? Duration.zero : widget.animationDuration;
     final size = widget.size;
@@ -76,7 +74,8 @@ class _GlassMorphFloatingActionButtonState
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: widget.gradientConfig == null ? backgroundColor : null,
+        gradient: widget.gradientConfig?.gradient,
         shape: BoxShape.circle,
         border: effectiveBorder,
         boxShadow: [
@@ -122,12 +121,32 @@ class _GlassMorphFloatingActionButtonState
       );
     }
 
+    // Generate more descriptive semantic label based on content
+    String generateSemanticLabel() {
+      if (widget.semanticsLabel != null) return widget.semanticsLabel!;
+
+      // Try to extract text from child widget for better context
+      String contentDescription = 'Glass floating action button';
+      if (widget.child is Text) {
+        final textContent = (widget.child as Text).data ?? '';
+        if (textContent.isNotEmpty) {
+          contentDescription = '$textContent button';
+        }
+      } else if (widget.child is Icon) {
+        // For icon-only FABs, provide more context
+        contentDescription = 'Glass action button';
+      }
+
+      return contentDescription;
+    }
+
     return Semantics(
       container: true,
       button: true,
-      label: widget.semanticsLabel ?? 'Glass floating action button',
+      enabled: widget.onPressed != null,
+      label: generateSemanticLabel(),
       onTapHint: widget.semanticsOnTapHint ??
-          (widget.onPressed != null ? 'Activate' : null),
+          (widget.onPressed != null ? 'Tap to perform action' : null),
       child: Material(
         type: MaterialType.transparency,
         child: content,
