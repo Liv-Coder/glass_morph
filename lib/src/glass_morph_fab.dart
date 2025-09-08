@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
+import 'package:flutter/services.dart';
 
 /// GlassMorphFloatingActionButton: glass FAB with accessible semantics, highContrast and reduceMotion.
 class GlassMorphFloatingActionButton extends StatefulWidget {
@@ -103,6 +104,7 @@ class _GlassMorphFloatingActionButtonState
         onTapCancel: () => _setPressed(false),
         onTapUp: (_) {
           _setPressed(false);
+          HapticFeedback.lightImpact();
           widget.onPressed?.call();
         },
         child: AnimatedScale(

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
+import 'package:flutter/services.dart';
+import 'utils/glass_gradient_config.dart';
+import 'utils/glass_variant_config.dart';
 
 /// A lightweight, drop-in animated glass-morphism button.
 ///
@@ -24,6 +27,8 @@ class GlassMorphButton extends StatefulWidget {
     this.border,
     this.shadow,
     this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    this.gradientConfig,
+    this.variantConfig,
     this.semanticsLabel,
     this.semanticsOnTapHint,
   })  : assert(blur >= 0, 'Blur value must be non-negative'),
@@ -39,6 +44,14 @@ class GlassMorphButton extends StatefulWidget {
   final Border? border;
   final List<BoxShadow>? shadow;
   final EdgeInsets padding;
+
+  /// Optional gradient configuration for background effects.
+  /// When provided, replaces the solid color background with a gradient.
+  final GlassGradientConfig? gradientConfig;
+
+  /// Optional variant configuration for different widget styles.
+  /// When provided, overrides the default glass morphism behavior.
+  final GlassVariantConfig? variantConfig;
 
   /// Optional semantic label (defaults to "Glass button").
   final String? semanticsLabel;
@@ -63,8 +76,11 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
   }
 
   double get _scale => _pressed ? 0.96 : 1.0;
-  double get _currentBlur =>
-      _pressed ? widget._clampedBlur * 0.6 : widget._clampedBlur;
+  double get _currentBlur {
+    final baseBlur =
+        widget.variantConfig?.getEffectiveBlur(widget.blur) ?? widget.blur;
+    return _pressed ? baseBlur * 0.6 : baseBlur;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +92,15 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
     final duration = reduceMotion ? Duration.zero : widget.animationDuration;
     final radius = BorderRadius.circular(widget.borderRadius);
 
-    // If high contrast is requested and no border provided, add a prominent border.
-    final effectiveBorder = widget.border ??
+    // Apply variant configuration if provided
+    final effectiveBlur =
+        widget.variantConfig?.getEffectiveBlur(widget.blur) ?? widget.blur;
+    final effectiveOpacity =
+        widget.variantConfig?.getEffectiveOpacity(widget.opacity) ??
+            widget.opacity;
+    final effectiveBorderRadius = widget.borderRadius;
+    final effectiveBorder = widget.variantConfig?.border ??
+        widget.border ??
         (highContrast
             ? Border.all(
                 color: Theme.of(context)
@@ -87,21 +110,26 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
                 width: 2.0,
               )
             : null);
+    final effectiveShadow = widget.shadow;
+    final effectivePadding = widget.padding;
 
     Widget content = AnimatedScale(
       scale: widget.animate ? _scale : 1.0,
       duration: duration,
       curve: Curves.easeOut,
       child: Container(
-        padding: widget.padding,
+        padding: effectivePadding,
         decoration: BoxDecoration(
-          color: Theme.of(context)
-              .colorScheme
-              .surface
-              .withValues(alpha: widget.opacity),
-          borderRadius: radius,
+          gradient: widget.gradientConfig?.toGradient(),
+          color: widget.gradientConfig == null
+              ? Theme.of(context)
+                  .colorScheme
+                  .surface
+                  .withValues(alpha: effectiveOpacity)
+              : null,
+          borderRadius: BorderRadius.circular(effectiveBorderRadius),
           border: effectiveBorder,
-          boxShadow: widget.shadow,
+          boxShadow: effectiveShadow,
         ),
         child: DefaultTextStyle(
           style: Theme.of(context).textTheme.labelLarge ?? const TextStyle(),
@@ -134,14 +162,14 @@ class _GlassMorphButtonState extends State<GlassMorphButton>
         onTapCancel: () => _setPressed(false),
         onTapUp: (_) {
           _setPressed(false);
+          HapticFeedback.lightImpact();
           widget.onPressed?.call();
         },
         child: AnimatedContainer(
           duration: duration,
           curve: Curves.easeOut,
           // Small elevation change when pressed — visual polish only.
-          transform: Matrix4.identity()
-            ..translate(0.0, _pressed ? 1.0 : 0.0, 0.0),
+          transform: Matrix4.translationValues(0.0, _pressed ? 1.0 : 0.0, 0.0),
           child: content,
         ),
       ),

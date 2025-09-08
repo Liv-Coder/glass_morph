@@ -393,6 +393,47 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
+                const SizedBox(height: 32),
+
+                // Gradient Backgrounds Showcase Section
+                Text(
+                  'Gradient Backgrounds',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Ocean Gradient Showcase
+                _buildWidgetSection(
+                  context,
+                  title: 'Ocean Gradient',
+                  description:
+                      'Glass-morphism with ocean-inspired gradient background',
+                  child: GlassMorphButton(
+                    onPressed: () {},
+                    blur: 12,
+                    opacity: 0.2,
+                    borderRadius: 16,
+                    animate: true,
+                    gradientConfig: GlassGradientConfig.ocean,
+                    child: Text(
+                      'Ocean',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
+                // Stats Section
                 // Stats Section
                 Row(
                   children: [
